@@ -344,61 +344,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 
 void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper)
 {
-	vec3_t		from, right, forward, up;
-	vec3_t		end;
-	trace_t		tr;
-	edict_t		*ignore;
-	int			mask;
-	qboolean	water;
-	AngleVectors(dir, forward, right, up); //sh385
-	VectorMA (start, 8192, dir, end);
-	VectorMA (end, crandom()*2000, right, end); //sh385 added
-	VectorMA (end, crandom()*1000, up, end); //sh385 added
-	VectorCopy (start, from);
-	ignore = self;
-	water = false;
-	mask = MASK_SHOT|CONTENTS_SLIME|CONTENTS_LAVA;
-	while (ignore)
-	{
-		tr = gi.trace (from, NULL, NULL, end, ignore, mask);
-
-		if (tr.contents & (CONTENTS_SLIME|CONTENTS_LAVA))
-		{
-			mask &= ~(CONTENTS_SLIME|CONTENTS_LAVA);
-			water = true;
-		}
-		else
-		{
-			if ((tr.ent->svflags & SVF_MONSTER) || (tr.ent->client))
-				ignore = tr.ent;
-			else
-				ignore = NULL;
-
-			if ((tr.ent != self) && (tr.ent->takedamage))
-				T_Damage (tr.ent, self, self, dir, tr.endpos, tr.plane.normal, damage, 0, 0, MOD_RAILGUN);
-		}
-
-		VectorCopy (tr.endpos, from);
-	}
-
-	// send gun puff / flash
-	gi.WriteByte (svc_temp_entity);
-	gi.WriteByte (TE_RAILTRAIL);
-	gi.WritePosition (start);
-	gi.WritePosition (tr.endpos);
-	gi.multicast (self->s.origin, MULTICAST_PHS);
-//	gi.multicast (start, MULTICAST_PHS);
-	if (water)
-	{
-		gi.WriteByte (svc_temp_entity);
-		gi.WriteByte (TE_RAILTRAIL);
-		gi.WritePosition (start);
-		gi.WritePosition (tr.endpos);
-		gi.multicast (tr.endpos, MULTICAST_PHS);
-	}
-
-	if (self->client)
-		PlayerNoise(self, tr.endpos, PNOISE_IMPACT);
+	fire_rail (self, start, dir, damage, 0); //sh385
 }	
 
 
@@ -669,14 +615,16 @@ fire_rail
 */
 void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick)
 {
-	vec3_t		from;
+	vec3_t		from, right, forward, up;
 	vec3_t		end;
 	trace_t		tr;
 	edict_t		*ignore;
 	int			mask;
 	qboolean	water;
-
+	AngleVectors(aimdir, forward, right, up); //sh385
 	VectorMA (start, 8192, aimdir, end);
+	VectorMA (end, crandom()*2000, right, end); //sh385 added
+	VectorMA (end, crandom()*1000, up, end); //sh385 added
 	VectorCopy (start, from);
 	ignore = self;
 	water = false;
@@ -698,7 +646,7 @@ void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick
 				ignore = NULL;
 
 			if ((tr.ent != self) && (tr.ent->takedamage))
-				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, 0, MOD_RAILGUN);
+				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, 0, 0, MOD_RAILGUN);
 		}
 
 		VectorCopy (tr.endpos, from);
