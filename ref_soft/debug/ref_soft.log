@@ -1,0 +1,10 @@
+﻿Build started 4/4/2016 5:02:59 PM.
+     1>Project "C:\Users\sharg_000\gameMod\Quake-2\ref_soft\ref_soft.vcxproj" on node 2 (clean target(s)).
+     1>_PrepareForClean:
+         Deleting file ".\debug\ref_soft.lastbuildstate".
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppClean.targets(74,5): error : Search pattern cannot contain ".." to move up directories and can be contained only internally in file/directory names, as in "a..b".
+     1>Done Building Project "C:\Users\sharg_000\gameMod\Quake-2\ref_soft\ref_soft.vcxproj" (clean target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.03
