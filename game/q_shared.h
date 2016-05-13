@@ -485,8 +485,10 @@ typedef enum
 // will result in a prediction error of some degree.
 typedef struct
 {
-	pmtype_t	pm_type;
 
+	pmtype_t	pm_type;
+	float		pm_maxspeed;	//sh385
+	float		pm_accelerate;	//sh385
 	short		origin[3];		// 12.3
 	short		velocity[3];	// 12.3
 	byte		pm_flags;		// ducked, jump_held, etc
@@ -1008,8 +1010,11 @@ typedef enum
 #define	STAT_FLASHES			15		// cleared each frame, 1 = health, 2 = armor
 #define STAT_CHASE				16
 #define STAT_SPECTATOR			17
-
-#define	MAX_STATS				32
+#define STAT_INFECT				18 //sh385 Added
+#define STAT_TIME				19 //sh385 Added
+#define STAT_SECOND				20 //sh385 Added
+#define STAT_MINUTE				21 //sh385 Added
+#define	MAX_STATS				32 
 
 
 // dmflags->value flags

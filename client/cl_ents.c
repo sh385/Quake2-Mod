@@ -1351,6 +1351,8 @@ Sets cl.refdef view values
 */
 void CL_CalcViewValues (void)
 {
+	
+
 	int			i;
 	float		lerp, backlerp;
 	centity_t	*ent;
@@ -1373,7 +1375,6 @@ void CL_CalcViewValues (void)
 
 	ent = &cl_entities[cl.playernum+1];
 	lerp = cl.lerpfrac;
-
 	// calculate the origin
 	if ((cl_predict->value) && !(cl.frame.playerstate.pmove.pm_flags & PMF_NO_PREDICTION))
 	{	// use predicted values

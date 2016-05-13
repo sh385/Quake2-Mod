@@ -249,6 +249,7 @@ typedef struct
 	int			edict_size;
 	int			num_edicts;		// current number, <= max_edicts
 	int			max_edicts;
+	int		 survivorCount; //sh385
 } game_export_t;
 
 game_export_t *GetGameApi (game_import_t *import);

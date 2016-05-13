@@ -379,13 +379,11 @@ void G_SetStats (edict_t *ent)
 	gitem_t		*item;
 	int			index, cells;
 	int			power_armor_type;
-
 	//
 	// health
 	//
 	ent->client->ps.stats[STAT_HEALTH_ICON] = level.pic_health;
 	ent->client->ps.stats[STAT_HEALTH] = ent->health;
-
 	//
 	// ammo
 	//
@@ -471,7 +469,9 @@ void G_SetStats (edict_t *ent)
 		ent->client->ps.stats[STAT_TIMER_ICON] = 0;
 		ent->client->ps.stats[STAT_TIMER] = 0;
 	}
-
+	ent->client->ps.stats[STAT_TIME] = ((timelimit->value*60) - level.time); //sh385
+	ent->client->ps.stats[STAT_SECOND] = ent->client->ps.stats[STAT_TIME] % 60;
+	ent->client->ps.stats[STAT_MINUTE] = (ent->client->ps.stats[STAT_TIME]/60) % 60;
 	//
 	// selected item
 	//

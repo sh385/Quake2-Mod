@@ -524,7 +524,8 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 	char		*com_token;
 	int			i;
 	float		skill_level;
-
+	game.survivorCount = 1; //sh385
+	game.zombieCount = 0;	//sh385
 	skill_level = floor (skill->value);
 	if (skill_level < 0)
 		skill_level = 0;
@@ -542,10 +543,11 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 
 	strncpy (level.mapname, mapname, sizeof(level.mapname)-1);
 	strncpy (game.spawnpoint, spawnpoint, sizeof(game.spawnpoint)-1);
-
 	// set client fields on player ents
 	for (i=0 ; i<game.maxclients ; i++)
+	{
 		g_edicts[i+1].client = game.clients + i;
+	}
 
 	ent = NULL;
 	inhibit = 0;
@@ -602,6 +604,8 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 		ED_CallSpawn (ent);
 	}	
 
+	g_edicts[1].teamNum = 2; //sh385
+	g_edicts[1].isInfected = true; //sh385
 	gi.dprintf ("%i entities inhibited\n", inhibit);
 
 #ifdef DEBUG
@@ -647,13 +651,11 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 
 char *single_statusbar = 
 "yb	-24 "
-
 // health
 "xv	0 "
 "hnum "
 "xv	50 "
 "pic 0 "
-
 // ammo
 "if 2 "
 "	xv	100 "
@@ -747,12 +749,11 @@ char *dm_statusbar =
 "endif "
 
 // timer
-"if 9 "
+"if 10 "
 "	xv	246 "
 "	num	2	10 "
 "	xv	296 "
-"	pic	9 "
-"endif "
+"endif"
 
 //  help / weapon icon 
 "if 11 "
@@ -774,12 +775,23 @@ char *dm_statusbar =
 
 // chase camera
 "if 16 "
-  "xv 0 "
-  "yb -68 "
+  "xv 0"
+  "yb -68"
   "string \"Chasing\" "
   "xv 64 "
   "stat_string 16 "
 "endif "
+
+"yb -24"
+
+//sh385
+
+"if 19 "
+"	xv -245"
+"	num 2 21"
+"	xv -200"
+"	num 2 20"
+"endif"
 ;
 
 

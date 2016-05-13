@@ -1,20 +1,39 @@
-﻿Build started 4/7/2016 11:43:18 AM.
+﻿Build started 5/12/2016 11:41:58 PM.
      1>Project "C:\Users\sharg_000\gameMod\Quake-2\game\game.vcxproj" on node 2 (build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(299,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
      1>InitializeBuildStatus:
          Creating ".\release\game.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Z7 /nologo /W4 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _WINDOWS /D _VC80_UPGRADE=0x0600 /D _WINDLL /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\release\\" /Fd".\release\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt g_weapon.c
-         g_weapon.c
-     1>g_weapon.c(345): warning C4100: 'hyper' : unreferenced formal parameter
-     1>g_weapon.c(345): warning C4100: 'effect' : unreferenced formal parameter
-     1>g_weapon.c(345): warning C4100: 'speed' : unreferenced formal parameter
-     1>g_weapon.c(413): warning C4100: 'plane' : unreferenced formal parameter
-     1>g_weapon.c(616): warning C4100: 'kick' : unreferenced formal parameter
-     1>g_weapon.c(803): warning C4127: conditional expression is constant
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(C:\Users\sharg_000\gameMod\Quake-2\game\.\..\release\game.dll) does not match the Linker's OutputFile property value (C:\Users\sharg_000\gameMod\Quake-2\release\gamex86.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(game) does not match the Linker's OutputFile property value (gamex86). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Z7 /nologo /W4 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _WINDOWS /D _VC80_UPGRADE=0x0600 /D _WINDLL /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\release\\" /Fd".\release\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt p_client.c p_weapon.c
+         p_client.c
+     1>p_client.c(46): warning C4127: conditional expression is constant
+     1>p_client.c(70): warning C4100: 'self' : unreferenced formal parameter
+     1>p_client.c(179): warning C4100: 'damage' : unreferenced formal parameter
+     1>p_client.c(179): warning C4100: 'kick' : unreferenced formal parameter
+     1>p_client.c(179): warning C4100: 'other' : unreferenced formal parameter
+     1>p_client.c(179): warning C4100: 'self' : unreferenced formal parameter
+     1>p_client.c(211): warning C4100: 'inflictor' : unreferenced formal parameter
+     1>p_client.c(506): warning C4100: 'point' : unreferenced formal parameter
+     1>p_client.c(509): warning C4101: 'i' : unreferenced local variable
+     1>p_client.c(878): warning C4127: conditional expression is constant
+     1>p_client.c(963): warning C4100: 'point' : unreferenced formal parameter
+     1>p_client.c(963): warning C4100: 'attacker' : unreferenced formal parameter
+     1>p_client.c(963): warning C4100: 'inflictor' : unreferenced formal parameter
+     1>p_client.c(1014): warning C4101: 'i' : unreferenced local variable
+     1>p_client.c(1407): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>p_client.c(1412): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(188) : see declaration of 'strncpy'
+     1>p_client.c(1452): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(188) : see declaration of 'strncpy'
+         p_weapon.c
+     1>p_weapon.c(782): warning C4020: 'fire_rocket' : too many actual parameters
+     1>p_weapon.c(815): warning C4100: 'effect' : unreferenced formal parameter
+     1>p_weapon.c(1387): warning C4189: 'damage_radius' : local variable is initialized but not referenced
+         Generating Code...
+     1>c:\users\sharg_000\gamemod\quake-2\game\p_client.c(386): warning C4702: unreachable code
+     1>c:\users\sharg_000\gamemod\quake-2\game\p_client.c(621): warning C4700: uninitialized local variable 'it' used
        Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"..\release\gamex86.dll" /INCREMENTAL:NO /NOLOGO winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:".\game.def" /MANIFEST /ManifestFile:".\release\game.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /PDB:"C:\Users\sharg_000\gameMod\Quake-2\release\game.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /BASE:"0x20000000" /DYNAMICBASE /NXCOMPAT /IMPLIB:".\..\release\gamex86.lib" /MACHINE:X86 /DLL .\release\g_ai.obj
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Quake 2\baseq2\gamex86.dll" /INCREMENTAL:NO /NOLOGO winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:".\game.def" /MANIFEST /ManifestFile:".\release\gamex86.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /PDB:"C:\Program Files (x86)\Steam\SteamApps\common\Quake 2\baseq2\gamex86.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /BASE:"0x20000000" /DYNAMICBASE /NXCOMPAT /IMPLIB:".\..\release\gamex86.lib" /MACHINE:X86 /DLL .\release\g_ai.obj
          .\release\g_chase.obj
          .\release\g_cmds.obj
          .\release\g_combat.obj
@@ -63,9 +82,9 @@
          .\release\p_weapon.obj
          .\release\q_shared.obj
             Creating library .\..\release\gamex86.lib and object .\..\release\gamex86.exp
-         game.vcxproj -> C:\Users\sharg_000\gameMod\Quake-2\game\.\..\release\game.dll
+         game.vcxproj -> C:\Users\sharg_000\gameMod\Quake-2\game\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Quake 2\baseq2\gamex86.dll
        Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"..\release\gamex86.dll;#2" /manifest .\release\game.dll.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Quake 2\baseq2\gamex86.dll;#2" /manifest .\release\gamex86.dll.intermediate.manifest
        FinalizeBuildStatus:
          Deleting file ".\release\game.unsuccessfulbuild".
          Touching ".\release\game.lastbuildstate".
@@ -73,4 +92,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.27
+Time Elapsed 00:00:01.51

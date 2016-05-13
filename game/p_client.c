@@ -315,7 +315,7 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 		{
 			switch (mod)
 			{
-			case MOD_BLASTER:
+			/*case MOD_BLASTER:
 				message = "was blasted by";
 				break;
 			case MOD_SHOTGUN:
@@ -382,17 +382,22 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 			case MOD_TELEFRAG:
 				message = "tried to invade";
 				message2 = "'s personal space";
-				break;
+				break;*/
+			message = "WAS INFECTED";
 			}
 			if (message)
 			{
-				gi.bprintf (PRINT_MEDIUM,"%s %s %s%s\n", self->client->pers.netname, message, attacker->client->pers.netname, message2);
+				//gi.bprintf (PRINT_MEDIUM,"%s %s %s%s\n", self->client->pers.netname, message, attacker->client->pers.netname, message2);
 				if (deathmatch->value)
 				{
 					if (ff)
 						attacker->client->resp.score--;
 					else
+					{
 						attacker->client->resp.score++;
+						attacker->killstreak++; //sh385
+						self->killstreak = 0; //sh385
+					}
 				}
 				return;
 			}
@@ -501,7 +506,9 @@ player_die
 void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
 {
 	int		n;
-
+	int		i;
+	edict_t		*it_ent; //sh385
+	gitem_t		*it; //sh385
 	VectorClear (self->avelocity);
 
 	self->takedamage = DAMAGE_YES;
@@ -547,7 +554,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 	self->client->enviro_framenum = 0;
 	self->flags &= ~FL_POWER_ARMOR;
 
-	if (self->health < -40)
+ 	if (self->health < -40)
 	{	// gib
 		gi.sound (self, CHAN_BODY, gi.soundindex ("misc/udeath.wav"), 1, ATTN_NORM, 0);
 		for (n= 0; n < 4; n++)
@@ -590,7 +597,33 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 	}
 
 	self->deadflag = DEAD_DEAD;
-
+	if (self->teamNum == 1) //sh385
+	{
+		if (attacker->isInfected)
+			{
+				if (attacker->killstreak == 1)
+				{
+					attacker->max_health = 150;
+					attacker->health = attacker->max_health;
+				}
+				else if (attacker->killstreak == 2)
+				{
+					attacker->client->ps.pmove.pm_maxspeed = 1000;
+					attacker->client->ps.pmove.pm_accelerate = 50; 
+				}
+				self->isInfected = true;
+				self->teamNum = 2;
+				game.survivorCount--;
+				game.zombieCount++;
+			}
+				attacker->currentWeapon++;
+				it_ent = G_Spawn();
+				it_ent->classname = it->classname;
+				SpawnItem (it_ent, it);
+				Touch_Item (it_ent, attacker, NULL, NULL);
+				if (it_ent->inuse)
+					G_FreeEdict(it_ent);
+	}
 	gi.linkentity (self);
 }
 
@@ -618,7 +651,6 @@ void InitClientPersistant (gclient_t *client)
 
 	client->pers.health			= 100;
 	client->pers.max_health		= 100;
-
 	client->pers.max_bullets	= 200;
 	client->pers.max_shells		= 100;
 	client->pers.max_rockets	= 50;
@@ -979,6 +1011,7 @@ void CopyToBodyQue (edict_t *ent)
 
 void respawn (edict_t *self)
 {
+	int i;
 	if (deathmatch->value || coop->value)
 	{
 		// spectator's don't leave bodies
@@ -1296,10 +1329,14 @@ to be placed into the game.  This will happen every level load.
 void ClientBegin (edict_t *ent)
 {
 	int		i;
-
+	if (ent->teamNum == 0)
+	{
+		ent->teamNum = 1; //sh385 
+		ent->isInfected = false; //sh385
+	}
 	ent->client = game.clients + (ent - g_edicts - 1);
 
-	if (deathmatch->value)
+	if(deathmatch->value)
 	{
 		ClientBeginDeathmatch (ent);
 		return;
@@ -1309,6 +1346,7 @@ void ClientBegin (edict_t *ent)
 	// take it, otherwise spawn one from scratch
 	if (ent->inuse == true)
 	{
+
 		// the client has cleared the client side viewangles upon
 		// connecting to the server, which is different than the
 		// state when the game is saved, so we need to compensate
@@ -1344,7 +1382,6 @@ void ClientBegin (edict_t *ent)
 			gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 		}
 	}
-
 	// make sure all view stuff is valid
 	ClientEndServerFrame (ent);
 }

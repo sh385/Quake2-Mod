@@ -90,8 +90,7 @@ cvar_t	*cl_vwep;
 client_static_t	cls;
 client_state_t	cl;
 
-centity_t		cl_entities[MAX_EDICTS];
-
+centity_t		cl_entities[MAX_EDICTS]; 
 entity_state_t	cl_parse_entities[MAX_PARSE_ENTITIES];
 
 extern	cvar_t *allow_download;
@@ -113,7 +112,6 @@ Dumps the current net message, prefixed by the length
 void CL_WriteDemoMessage (void)
 {
 	int		len, swlen;
-
 	// the first eight bytes are just packet sequencing stuff
 	len = net_message.cursize-8;
 	swlen = LittleLong(len);

@@ -275,6 +275,13 @@ void SV_CalcViewOffset (edict_t *ent)
 		delta = DotProduct (ent->velocity, right);
 		angles[ROLL] += delta*run_roll->value;
 
+		//add angles if infected sh385
+		if (ent->isInfected)
+		{
+			angles[ROLL] += random() * 5;
+			angles[PITCH] += random() * 2;
+		}
+
 		// add angles based on bob
 
 		delta = bobfracsin * bob_pitch->value * xyspeed;
@@ -746,12 +753,16 @@ void G_SetClientEffects (edict_t *ent)
 {
 	int		pa_type;
 	int		remaining;
-
+	
 	ent->s.effects = 0;
-	ent->s.renderfx = 0;
+	ent->s.renderfx = 1;
 
 	if (ent->health <= 0 || level.intermissiontime)
 		return;
+	if (ent->isInfected) //sh385
+	{
+		SV_AddBlend (1.0, 0.0, 0.0, 0.2, ent->client->ps.blend); //sh385
+	}
 
 	if (ent->powerarmor_time > level.time)
 	{

@@ -251,7 +251,6 @@ void SV_Begin_f (void)
 
 	// call the game begin function
 	ge->ClientBegin (sv_player);
-
 	Cbuf_InsertFromDefer ();
 }
 

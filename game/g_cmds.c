@@ -158,11 +158,11 @@ void Cmd_Give_f (edict_t *ent)
 	qboolean	give_all;
 	edict_t		*it_ent;
 
-	if (deathmatch->value && !sv_cheats->value)
+	/*if (deathmatch->value && !sv_cheats->value)
 	{
 		gi.cprintf (ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
 		return;
-	}
+	}*/
 
 	name = gi.args();
 

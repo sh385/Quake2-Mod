@@ -80,7 +80,7 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\release\</OutDir>
+    <OutDir>..\..\..\..\Program Files %28x86%29\Steam\SteamApps\common\Quake 2</OutDir>
     <IntDir>.\release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -205,7 +205,6 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <OutputFile>.\release\quake2.exe</OutputFile>
       <AdditionalDependencies>winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

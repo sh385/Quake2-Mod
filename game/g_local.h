@@ -273,7 +273,8 @@ typedef struct
 	char		helpmessage2[512];
 	int			helpchanged;	// flash F1 icon if non 0, play sound
 								// and increment only if 1, 2, or 3
-
+	int			survivorCount; //sh385
+	int			zombieCount; //sh385
 	gclient_t	*clients;		// [maxclients]
 
 	// can't store spawnpoint in level, because
@@ -728,12 +729,12 @@ qboolean fire_hit (edict_t *self, vec3_t aim, int damage, int kick);
 void fire_bullet (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int mod);
 void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int count, int mod);
 void fire_blaster (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int effect, qboolean hyper);
-void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius);
+void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, qboolean check);
 void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, qboolean held);
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage);
-void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
+void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, qboolean check);
 void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
-
+void fire_spreadGrenade(edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius);
 //
 // g_ptrail.c
 //
@@ -887,7 +888,6 @@ struct gclient_s
 	client_persistant_t	pers;
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
-
 	qboolean	showscores;			// set layout stat
 	qboolean	showinventory;		// set layout stat
 	qboolean	showhelp;
@@ -969,10 +969,8 @@ struct edict_s
 									// the server expects the first part
 									// of gclient_s to be a player_state_t
 									// but the rest of it is opaque
-
 	qboolean	inuse;
 	int			linkcount;
-
 	// FIXME: move these fields to a server private sv_entity_t
 	link_t		area;				// linked to a division node or leaf
 	
@@ -997,7 +995,9 @@ struct edict_s
 	//================================
 	int			movetype;
 	int			flags;
-
+	int			teamNum; //sh385
+	int			killstreak; //sh385
+	int			currentWeapon; //sh385
 	char		*model;
 	float		freetime;			// sv.time when the object was freed
 	
@@ -1019,7 +1019,9 @@ struct edict_s
 	char		*deathtarget;
 	char		*combattarget;
 	edict_t		*target_ent;
-
+	qboolean	isInfected; //sh385
+	float		duration; //sh385
+	float		beginTime; //sh385
 	float		speed, accel, decel;
 	vec3_t		movedir;
 	vec3_t		pos1, pos2;

@@ -283,12 +283,20 @@ void CheckDMRules (void)
 
 	if (!deathmatch->value)
 		return;
+	if (game.survivorCount <= 0) //sh385
+	{
+		gi.bprintf (PRINT_HIGH, "No Humans Remain\n");
+		//gi.bprintf (PRINT_HIGH, "Timelimit hit.\n");
+		EndDMLevel ();
+		return;
+	}
 
 	if (timelimit->value)
 	{
 		if (level.time >= timelimit->value*60)
 		{
-			gi.bprintf (PRINT_HIGH, "Timelimit hit.\n");
+			gi.bprintf (PRINT_HIGH, "There are Still Survivors!\n");
+			//gi.bprintf (PRINT_HIGH, "Timelimit hit.\n");
 			EndDMLevel ();
 			return;
 		}

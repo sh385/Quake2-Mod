@@ -850,6 +850,7 @@ typedef struct
 	int			selected_item;
 	int			inventory[MAX_ITEMS];
 
+
 	// ammo capacities
 	int			max_bullets;
 	int			max_shells;

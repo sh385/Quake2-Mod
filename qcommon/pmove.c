@@ -51,14 +51,15 @@ pml_t		pml;
 
 // movement parameters
 float	pm_stopspeed = 100;
-float	pm_maxspeed = 300;
+//float	pm_maxspeed = 300;
 float	pm_duckspeed = 100;
-float	pm_accelerate = 10;
+//float	pm_accelerate = 10;
 float	pm_airaccelerate = 0;
 float	pm_wateraccelerate = 10;
 float	pm_friction = 6;
 float	pm_waterfriction = 1;
 float	pm_waterspeed = 400;
+
 
 /*
 
@@ -553,10 +554,10 @@ void PM_WaterMove (void)
 	VectorCopy (wishvel, wishdir);
 	wishspeed = VectorNormalize(wishdir);
 
-	if (wishspeed > pm_maxspeed)
+	if (wishspeed > pm->s.pm_maxspeed)
 	{
-		VectorScale (wishvel, pm_maxspeed/wishspeed, wishvel);
-		wishspeed = pm_maxspeed;
+		VectorScale (wishvel, pm->s.pm_maxspeed/wishspeed, wishvel);
+		wishspeed = pm->s.pm_maxspeed;
 	}
 	wishspeed *= 0.5;
 
@@ -604,17 +605,18 @@ void PM_AirMove (void)
 //
 // clamp to server defined max speed
 //
-	maxspeed = (pm->s.pm_flags & PMF_DUCKED) ? pm_duckspeed : pm_maxspeed;
+	maxspeed = (pm->s.pm_flags & PMF_DUCKED) ? pm_duckspeed : pm->s.pm_maxspeed;
 
 	if (wishspeed > maxspeed)
 	{
+		
 		VectorScale (wishvel, maxspeed/wishspeed, wishvel);
 		wishspeed = maxspeed;
 	}
 	
 	if ( pml.ladder )
 	{
-		PM_Accelerate (wishdir, wishspeed, pm_accelerate);
+		PM_Accelerate (wishdir, wishspeed, pm->s.pm_accelerate);
 		if (!wishvel[2])
 		{
 			if (pml.velocity[2] > 0)
@@ -635,7 +637,7 @@ void PM_AirMove (void)
 	else if ( pm->groundentity )
 	{	// walking on ground
 		pml.velocity[2] = 0; //!!! this is before the accel
-		PM_Accelerate (wishdir, wishspeed, pm_accelerate);
+		PM_Accelerate (wishdir, wishspeed, pm->s.pm_accelerate);
 
 // PGM	-- fix for negative trigger_gravity fields
 //		pml.velocity[2] = 0;
@@ -652,7 +654,7 @@ void PM_AirMove (void)
 	else
 	{	// not on ground, so little effect on velocity
 		if (pm_airaccelerate)
-			PM_AirAccelerate (wishdir, wishspeed, pm_accelerate);
+			PM_AirAccelerate (wishdir, wishspeed, pm->s.pm_accelerate);
 		else
 			PM_Accelerate (wishdir, wishspeed, 1);
 		// add gravity
@@ -710,7 +712,6 @@ void PM_CatagorizePosition (void)
 				pm->s.pm_flags &= ~(PMF_TIME_WATERJUMP | PMF_TIME_LAND | PMF_TIME_TELEPORT);
 				pm->s.pm_time = 0;
 			}
-
 			if (! (pm->s.pm_flags & PMF_ON_GROUND) )
 			{	// just hit the ground
 				pm->s.pm_flags |= PMF_ON_GROUND;
@@ -777,7 +778,7 @@ PM_CheckJump
 */
 void PM_CheckJump (void)
 {
-	if (pm->s.pm_flags & PMF_TIME_LAND)
+	if (pm->s.pm_flags & PMF_TIME_LAND) 
 	{	// hasn't been long enough since landing to jump again
 		return;
 	}
@@ -934,10 +935,10 @@ void PM_FlyMove (qboolean doclip)
 	//
 	// clamp to server defined max speed
 	//
-	if (wishspeed > pm_maxspeed)
+	if (wishspeed > pm->s.pm_maxspeed)
 	{
-		VectorScale (wishvel, pm_maxspeed/wishspeed, wishvel);
-		wishspeed = pm_maxspeed;
+		VectorScale (wishvel, pm->s.pm_maxspeed/wishspeed, wishvel);
+		wishspeed = pm->s.pm_maxspeed;
 	}
 
 
@@ -945,7 +946,7 @@ void PM_FlyMove (qboolean doclip)
 	addspeed = wishspeed - currentspeed;
 	if (addspeed <= 0)
 		return;
-	accelspeed = pm_accelerate*pml.frametime*wishspeed;
+	accelspeed = pm->s.pm_accelerate*pml.frametime*wishspeed;
 	if (accelspeed > addspeed)
 		accelspeed = addspeed;
 	
@@ -1240,7 +1241,11 @@ Can be called by either the server or the client
 void Pmove (pmove_t *pmove)
 {
 	pm = pmove;
-
+	if (!pm->s.pm_maxspeed)
+	{
+		pm->s.pm_maxspeed = 300; //sh385 Added
+		pm->s.pm_accelerate = 10; //sh385 Added
+	}
 	// clear results
 	pm->numtouch = 0;
 	VectorClear (pm->viewangles);
